@@ -5,6 +5,7 @@ import {
   compareHashedPassword,
   hashPassword,
 } from "../../utils/passwordHelper";
+import { generateToken } from "../../utils/jwtToken";
 
 interface RegisterReq extends Request {
   body: {
@@ -47,8 +48,10 @@ export const signInUser: RequestHandler = async (req, res) => {
     } else {
       const result = await compareHashedPassword(password, user.password);
       if (result) {
+        const token = await generateToken(user);
         return sendResponse(res, 200, "User sign in sucesfully", true, {
           user,
+          token,
         });
       } else {
         return sendResponse(res, 400, "Password mismatch", false);
