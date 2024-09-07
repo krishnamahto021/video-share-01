@@ -2,9 +2,15 @@ import express from "express";
 import dotenv from "dotenv";
 import connectDB from "./config/db";
 import routes from "./routes/index";
+import cors from "cors";
+
+const corsOptions = {
+  origin: ["http://localhost:5173"],
+};
 
 const app = express();
 dotenv.config();
+app.use(cors(corsOptions));
 
 // parsing data coming from frontend
 app.use(express.json());
