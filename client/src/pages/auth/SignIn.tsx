@@ -1,8 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 import Layout from "../../components/Layout";
 import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../../redux/store";
+import { signInUser } from "../../redux/reducers/auth/authReducer";
 
 const SignIn: React.FC = () => {
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const dispatch = useDispatch<AppDispatch>();
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    dispatch(signInUser({ email, password }));
+    setEmail("");
+    setPassword("");
+  };
   return (
     <Layout>
       <div className="flex items-center justify-center p-4 w-full">
@@ -10,7 +22,7 @@ const SignIn: React.FC = () => {
           <h1 className="text-3xl font-bold text-center text-gray-800 mb-6">
             Weclome back
           </h1>
-          <form className="space-y-6">
+          <form className="space-y-6" onSubmit={handleSubmit}>
             <div>
               <label
                 htmlFor="email"
@@ -22,6 +34,8 @@ const SignIn: React.FC = () => {
                 type="email"
                 name="email"
                 required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 className="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm"
                 placeholder="Enter your email"
               />
@@ -37,6 +51,8 @@ const SignIn: React.FC = () => {
                 type="password"
                 name="password"
                 required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 className="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm"
                 placeholder="Enter your password"
               />

@@ -47,11 +47,11 @@ export const signInUser: RequestHandler = async (req, res) => {
       return sendResponse(res, 400, "Account doesn't exist", false);
     } else {
       const result = await compareHashedPassword(password, user.password);
+      const { name, email } = user;
       if (result) {
         const token = await generateToken(user);
         return sendResponse(res, 200, "User sign in sucesfully", true, {
-          user,
-          token,
+          user: { token, name, email },
         });
       } else {
         return sendResponse(res, 400, "Password mismatch", false);

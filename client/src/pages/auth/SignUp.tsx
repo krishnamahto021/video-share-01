@@ -1,21 +1,20 @@
 import React, { useState } from "react";
 import Layout from "../../components/Layout";
 import { Link } from "react-router-dom";
-import axios from "axios";
+import { useDispatch } from "react-redux";
+import { signUpUser } from "../../redux/reducers/auth/authReducer";
+import { AppDispatch } from "../../redux/store";
 
 const SignUp: React.FC = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const dispatch = useDispatch<AppDispatch>();
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     // data -> data (this data will have all the details)
     e.preventDefault();
-    console.log("hi");
-
-    const data = await axios.post("http://localhost:8000/api/v1/auth/sign-up", {
-      email,
-      password,
-    });
-    console.log(data);
+    dispatch(signUpUser({ email, password }));
+    setEmail("");
+    setPassword("");
   };
 
   return (
