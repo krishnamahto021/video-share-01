@@ -6,6 +6,10 @@ import {
   hashPassword,
 } from "../../utils/passwordHelper";
 import { generateToken } from "../../utils/jwtToken";
+import { transporter } from "../../config/nodemailer";
+import dotenv from "dotenv";
+import { welcomeUser } from "../../mailer/welcomeUser";
+dotenv.config();
 
 interface RegisterReq extends Request {
   body: {
@@ -18,6 +22,7 @@ interface RegisterReq extends Request {
 export const signUpUser: RequestHandler = async (req: RegisterReq, res) => {
   try {
     const { email, password } = req.body;
+
     const user = await User.findOne({ email });
     if (user) {
       return sendResponse(res, 400, "Account already exists", false);
@@ -27,6 +32,7 @@ export const signUpUser: RequestHandler = async (req: RegisterReq, res) => {
         email: email,
         password: hashedPassword,
       });
+      welcomeUser(newUser);
       return sendResponse(res, 200, "Account created sucessfully", true, {
         newUser,
       });
