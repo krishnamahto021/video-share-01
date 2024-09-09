@@ -22,7 +22,7 @@ passport.use(
       if (!user) {
         return done(null, false);
       }
-      return done(null, false);
+      return done(null, user);
     } catch (error) {
       console.error(`Error in passwport jwt stratety ${error}`);
       return done(error);

@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import connectDB from "./config/db";
 import routes from "./routes/index";
 import cors from "cors";
+import passport from "./config/passportJwtStrategy";
 
 const corsOptions = {
   origin: ["http://localhost:5173"],
@@ -15,6 +16,9 @@ app.use(cors(corsOptions));
 // parsing data coming from frontend
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// initalize jwt authentication
+app.use(passport.initialize());
 
 const port = process.env.PORT || 8080;
 connectDB();
